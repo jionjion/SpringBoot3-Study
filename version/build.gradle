@@ -5,17 +5,19 @@ plugins {
 }
 
 group = 'top.jionjion'
-version = '1.0'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
 
 repositories {
     maven { url 'https://maven.aliyun.com/repository/public/' }
     mavenCentral()
 }
 
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter:3.0.0'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.0.0'
 }
 
 tasks.named('test') {
