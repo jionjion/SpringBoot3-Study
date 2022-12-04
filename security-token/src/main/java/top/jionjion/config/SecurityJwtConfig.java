@@ -66,11 +66,11 @@ public class SecurityJwtConfig {
                 // csrf 禁用
                 .csrf().disable()
                 // 请求认证
-                .authorizeRequests()
+                .authorizeHttpRequests()
                 // 匹配认证,放行认证
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                .antMatchers("/").permitAll()
-                .antMatchers("/login").permitAll().anyRequest().authenticated()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers("/").permitAll()
+                .requestMatchers("/login").permitAll().anyRequest().authenticated()
                 .and()
                 // Spring Security永远不会创建HttpSession，它不会使用HttpSession来获取SecurityContext
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

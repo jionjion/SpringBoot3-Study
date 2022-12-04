@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'top.jionjion'
-version = '1.0'
+version = '3.0'
 sourceCompatibility = '17'
 
 
