@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'top.jionjion'
-version = '1.0'
+version = '3.0'
 sourceCompatibility = '17'
 
 repositories {
@@ -17,6 +17,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.projectlombok:lombok:1.18.24'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testCompileOnly 'org.projectlombok:lombok:1.18.24'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'
 }
 
 tasks.named('test') {
