@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Range;
-import org.springframework.data.redis.connection.RedisZSetCommands;
+import org.springframework.data.redis.connection.Limit;
 import org.springframework.data.redis.core.DefaultTypedTuple;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
@@ -314,7 +314,7 @@ class ZSetOperationsTest {
         log.info(result1.toString());
 
         // 范围不做限制,返回值中截取第二个,累计截取两个
-        RedisZSetCommands.Limit limit = new RedisZSetCommands.Limit();
+        Limit limit = new Limit();
         limit.offset(1);
         limit.count(2);
         Set<String> result2 = zSetOperations.rangeByLex("ZSetA", Range.unbounded(), limit);
