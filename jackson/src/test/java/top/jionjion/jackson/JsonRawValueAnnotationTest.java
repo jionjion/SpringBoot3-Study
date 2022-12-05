@@ -1,0 +1,30 @@
+package top.jionjion.jackson;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import top.jionjion.jackson.JsonRawValueAnnotation;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * .@JsonRawValue 注解使用
+ *
+ * @author Jion
+ */
+@Slf4j
+class JsonRawValueAnnotationTest {
+
+    @Test
+    void test() throws JsonProcessingException {
+        JsonRawValueAnnotation student = new JsonRawValueAnnotation();
+        student.setName("囧囧");
+        // JSON字符串
+        student.setInfo("{\"地址\":\"上海\",\"年龄\":\"23\"}");
+
+        String result = new ObjectMapper().writeValueAsString(student);
+        assertNotNull(result);
+        log.info(result);
+    }
+}

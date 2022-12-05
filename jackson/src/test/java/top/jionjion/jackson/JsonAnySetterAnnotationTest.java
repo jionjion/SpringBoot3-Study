@@ -1,0 +1,39 @@
+package top.jionjion.jackson;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import top.jionjion.jackson.JsonAnySetterAnnotation;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+/**
+ * .@JsonAnySetter 类的测试
+ *
+ * @author Jion
+ */
+@Slf4j
+class JsonAnySetterAnnotationTest {
+
+    @Test
+    void test() throws IOException {
+        String json = "{\n" +
+                "  \"name\": \"囧囧\",\n" +
+                "  \"address\":\"上海\",\n" +
+                "  \"age\": \"23\",\n" +
+                "  \"score\": {\n" +
+                "    \"语文\":\"100\",\n" +
+                "    \"数学\": \"99\"\n" +
+                "  }\n" +
+                "}";
+
+        JsonAnySetterAnnotation student = new ObjectMapper()
+                .readerFor(JsonAnySetterAnnotation.class)
+                .readValue(json);
+
+        assertNotNull(student);
+        log.info(student.toString());
+    }
+}

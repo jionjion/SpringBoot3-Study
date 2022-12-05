@@ -1,0 +1,38 @@
+package top.jionjion.jackson;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.extern.slf4j.Slf4j;
+import top.jionjion.jackson.format.JsonFormatSerializer;
+
+import java.util.Date;
+
+/**
+ * .@JsonSerialize 注解使用
+ *
+ * @author Jion
+ */
+@Slf4j
+@SuppressWarnings("unused")
+public class JsonSerializeAnnotation {
+
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private Date birthday;
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    @JsonSerialize(using = JsonFormatSerializer.class)
+    public Date getBirthday() {
+        return birthday;
+    }
+}
