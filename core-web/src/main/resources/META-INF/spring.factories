@@ -1,0 +1,8 @@
+# 注册自定义系统初始化器
+org.springframework.context.ApplicationContextInitializer=top.jionjion.core.initializer.WebApplicationInitializerFirst
+
+# 注册自定义系统监听器
+org.springframework.context.ApplicationListener=top.jionjion.core.listener.WebApplicationListenerFirst,top.jionjion.core.listener.WebApplicationListenerFourth
+
+# 自定义异常处理报告
+org.springframework.boot.SpringBootExceptionReporter=top.jionjion.core.except.WebApplicationExceptionReporter

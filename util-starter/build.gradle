@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'maven-publish'
 }
 
 group = 'top.jionjion'
@@ -22,4 +23,22 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+
+publishing {
+
+    publications {
+        maven(MavenPublication) {
+            groupId = 'top.jionjion'
+            artifactId = 'util-starter'
+            version = '3.0'
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven { url 'E:\\Gradle\\repository' }
+    }
 }
