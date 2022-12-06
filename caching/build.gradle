@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'top.jionjion'
-version = '0.0.1-SNAPSHOT'
+version = '3.0'
 sourceCompatibility = '17'
 
 repositories {
