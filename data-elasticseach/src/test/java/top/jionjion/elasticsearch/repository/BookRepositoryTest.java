@@ -1,20 +1,15 @@
 package top.jionjion.elasticsearch.repository;
 
 import lombok.extern.slf4j.Slf4j;
-import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.sort.SortBuilders;
-import org.elasticsearch.search.sort.SortOrder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.elasticsearch.client.erhlc.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
-import org.springframework.data.elasticsearch.core.IndexOperations;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
+import org.springframework.data.elasticsearch.client.elc.NativeQueryBuilder;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHits;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import top.jionjion.elasticsearch.pojo.Food;
 
 import java.util.ArrayList;
@@ -31,10 +26,10 @@ import java.util.Optional;
 class BookRepositoryTest {
 
     /**
-     * Elasticsearch 模板引擎
+     * Elasticsearch 操作工具类
      */
     @Autowired
-    ElasticsearchRestTemplate elasticsearchTemplate;
+    ElasticsearchOperations elasticsearchOperations;
 
     /**
      * Food 增删改查
@@ -42,17 +37,6 @@ class BookRepositoryTest {
     @Autowired
     BookRepository foodRepository;
 
-
-    /**
-     * 索引操作
-     */
-    @Test
-    void testIndex() {
-        IndexOperations indexOperations = elasticsearchTemplate.indexOps(Food.class);
-        indexOperations.create();
-        indexOperations.putMapping();
-        indexOperations.delete();
-    }
 
     /**
      * 插入与更新
@@ -133,10 +117,10 @@ class BookRepositoryTest {
     @Test
     void testSearch() {
         //通过查询构建器工具构建--重点：QueryBuilders：词条、模糊、范围
-        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery("title", "手机")).build();
+        NativeQuery nativeSearchQuery = NativeQuery.builder().withQuery(query -> query.match(match -> match.field("title").query("手机"))).build();
 
         //获取结果集
-        SearchHits<Food> Foods = elasticsearchTemplate.search(nativeSearchQuery, Food.class);
+        SearchHits<Food> Foods = elasticsearchOperations.search(nativeSearchQuery, Food.class);
 
         Foods.forEach(System.out::println);
 
@@ -148,10 +132,10 @@ class BookRepositoryTest {
     @Test
     void testNative() {
         // 构建自定义查询构建器
-        NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder().withQuery(QueryBuilders.matchQuery("title", "手机")).build();
+        NativeQuery nativeSearchQuery = NativeQuery.builder().withQuery(query -> query.match(match -> match.field("title").query("手机"))).build();
         // 添加基本查询条件
         // 查询分页结果集
-        SearchHits<Food> foodSearchHits = elasticsearchTemplate.search(nativeSearchQuery, Food.class);
+        SearchHits<Food> foodSearchHits = elasticsearchOperations.search(nativeSearchQuery, Food.class);
         System.out.println(foodSearchHits.getTotalHits());
         foodSearchHits.forEach(System.out::println);
 
@@ -162,13 +146,12 @@ class BookRepositoryTest {
      */
     @Test
     void testPage() {
-        // 构建自定义查询构建器
-        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
-        // 添加基本查询条件
-        queryBuilder.withQuery(QueryBuilders.matchQuery("category", "手机"));
-        queryBuilder.withPageable(PageRequest.of(1, 2));
+        // 构建自定义查询构建器, 添加基本查询条件
+        NativeQuery nativeSearchQuery = NativeQuery.builder().withQuery(query -> query.match(match -> match.field("title").query("手机")))
+                .withPageable(PageRequest.of(1, 2))
+                .build();
         // 查询分页结果集
-        SearchHits<Food> foodSearchHits = this.elasticsearchTemplate.search(queryBuilder.build(), Food.class);
+        SearchHits<Food> foodSearchHits = this.elasticsearchOperations.search(nativeSearchQuery, Food.class);
         System.out.println(foodSearchHits.getTotalHits());
         foodSearchHits.forEach(System.out::println);
 
@@ -180,12 +163,14 @@ class BookRepositoryTest {
     @Test
     void testSort() {
         // 构建自定义查询构建器
-        NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
+        NativeQueryBuilder queryBuilder = NativeQuery.builder();
         // 添加基本查询条件
-        queryBuilder.withQuery(QueryBuilders.matchQuery("category", "手机"));
-        queryBuilder.withSorts(SortBuilders.fieldSort("price").order(SortOrder.DESC));
+        queryBuilder.withQuery(query -> query.match(match -> match.field("title").query("手机")));
+        // 排序
+        queryBuilder.withSort(Sort.by(Sort.Direction.DESC, "price"));
         // 查询分页结果集
-        SearchHits<Food> foodSearchHits = this.elasticsearchTemplate.search(queryBuilder.build(), Food.class);
+        queryBuilder.withPageable(PageRequest.of(1, 2));
+        SearchHits<Food> foodSearchHits = this.elasticsearchOperations.search(queryBuilder.build(), Food.class);
         System.out.println(foodSearchHits.getTotalHits());
         foodSearchHits.forEach(System.out::println);
     }

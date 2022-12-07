@@ -4,21 +4,21 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 /**
- * 测试 ElasticsearchRestTemplate 模板类
+ * 测试 ElasticsearchOperations 工具类
  *
  * @author Jion
  */
 @SpringBootTest
-class ElasticsearchRestTemplateTest {
+class ElasticsearchOperationsTest {
 
     @Autowired
-    ElasticsearchRestTemplate template;
+    ElasticsearchOperations operations;
 
     @Test
     void test() {
-        Assertions.assertNotNull(template);
+        Assertions.assertNotNull(operations);
     }
 }
