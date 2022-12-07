@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * 验证类
  * JSR-303 包含的注解.
- * {@code javax.validation.constraints.*}
+ * {@code jakarta.validation.constraints.*}
  *
  * @author Jion
  */
