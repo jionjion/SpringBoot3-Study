@@ -4,10 +4,8 @@ import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.*;
 
 /**
  * 工具类,通过 jsonwebtoken 类库 生成对应的 Token 字符
@@ -36,9 +34,9 @@ public class JwtTokenUtils {
     public static final String TOKEN_PREFIX = "Bearer ";
 
     /**
-     * 加密随机字符
+     * 加密随机字符..要求长一点
      */
-    public static final String SECRET = "jwtSecret";
+    public static final String SECRET = "jwtSecret000ThisKeyMustEnoughLong000ThisKeyMustEnoughLong000ThisKeyMustEnoughLong";
 
     /**
      * 签发人
@@ -61,8 +59,10 @@ public class JwtTokenUtils {
     public static String createToken(String username, String role) {
         Map<String, Object> map = new HashMap<>(4);
         map.put(ROLE, role);
+        byte[] base64 = Base64.getEncoder().encode(SECRET.getBytes());
+        SecretKeySpec secretKeySpec = new SecretKeySpec(base64, 0, base64.length, SignatureAlgorithm.HS256.getJcaName());
         return Jwts.builder()
-                .signWith(SignatureAlgorithm.HS512, SECRET)
+                .signWith(secretKeySpec, SignatureAlgorithm.HS256)
                 // 一些权限信息
                 .setClaims(map)
                 // 主题
@@ -85,9 +85,9 @@ public class JwtTokenUtils {
     private static Optional<Claims> getTokenBody(String token) {
 
         try {
-            Claims claims = Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
+            Claims claims = Jwts.parserBuilder().setSigningKey(SECRET.getBytes()).build().parseClaimsJws(token).getBody();
             return Optional.of(claims);
-        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | SignatureException | IllegalArgumentException e) {
+        } catch (ExpiredJwtException | UnsupportedJwtException | MalformedJwtException | IllegalArgumentException e) {
             e.printStackTrace();
             LOGGER.error(e.getMessage());
         }
