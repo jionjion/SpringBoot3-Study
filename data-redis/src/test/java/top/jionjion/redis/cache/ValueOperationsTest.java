@@ -5,8 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.lang.NonNull;
 
 import java.time.Duration;
 import java.util.*;
@@ -35,12 +39,18 @@ class ValueOperationsTest {
             valueOperations = redisTemplate.opsForValue();
         }
         // 初始化数据,启用事物,并提交
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.multi();
-        redisTemplate.delete("KeyA");
-        valueOperations.set("KeyA", "Aa");
-        valueOperations.set("KeyZero", "0");
-        redisTemplate.exec();
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Object> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                assertNotNull(operations);
+                operations.multi();
+                operations.delete("KeyA");
+                operations.opsForValue().set("KeyA", "Aa");
+                operations.opsForValue().set("KeyZero", "0");
+                return operations.exec();
+            }
+        });
     }
 
     /**

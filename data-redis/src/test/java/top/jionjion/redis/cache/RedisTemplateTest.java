@@ -6,8 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.*;
+import org.springframework.lang.NonNull;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * RedisTemplate的测试
@@ -125,14 +128,34 @@ BoundZSetOperations         Zset 绑定操作
      * 开启事物
      */
     @Test
+    @Deprecated
     void testTransactional() {
         redisTemplate.setEnableTransactionSupport(true);
         // 开始事物
         redisTemplate.multi();
         // 提交事物
         redisTemplate.exec();
-        // 回归事物
+        // 回滚事物
         redisTemplate.discard();
+    }
+
+    /**
+     * 使用事物回调函数
+     */
+    @Test
+    void testTransactional2() {
+        redisTemplate.execute(new SessionCallback<List<?>>() {
+            @Override
+            public List<?> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                // 开始事物
+                operations.multi();
+                // 回滚事物
+                operations.discard();
+                // 提交事物
+                operations.multi();
+                return operations.exec();
+            }
+        });
     }
 
 

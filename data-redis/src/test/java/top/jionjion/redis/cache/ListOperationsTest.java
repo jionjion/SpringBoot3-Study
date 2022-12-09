@@ -5,8 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.*;
+import org.springframework.lang.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +37,24 @@ class ListOperationsTest {
         if (Objects.isNull(listOperations)) {
             listOperations = redisTemplate.opsForList();
         }
-        // 初始化数据,启用事物,并提交
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.multi();
-        redisTemplate.delete("ListA");
-        listOperations.rightPush("ListA", "A");
-        listOperations.rightPush("ListA", "B");
-        listOperations.rightPush("ListA", "C");
-        redisTemplate.delete("ListB");
-        listOperations.rightPush("ListB", "D");
-        listOperations.rightPush("ListB", "E");
-        listOperations.rightPush("ListB", "F");
-        redisTemplate.exec();
+
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Object> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                assertNotNull(operations);
+                operations.multi();
+                operations.delete("ListA");
+                operations.opsForList().rightPush("ListA", "A");
+                operations.opsForList().rightPush("ListA", "B");
+                operations.opsForList().rightPush("ListA", "C");
+                operations.delete("ListB");
+                operations.opsForList().rightPush("ListB", "D");
+                operations.opsForList().rightPush("ListB", "E");
+                operations.opsForList().rightPush("ListB", "F");
+                return operations.exec();
+            }
+        });
     }
 
     /**

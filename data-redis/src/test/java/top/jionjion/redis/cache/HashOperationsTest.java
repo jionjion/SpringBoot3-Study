@@ -5,8 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
+import org.springframework.lang.NonNull;
 
 import java.util.*;
 
@@ -33,15 +37,28 @@ class HashOperationsTest {
         if (Objects.isNull(hashOperations)) {
             hashOperations = redisTemplate.opsForHash();
         }
+
         // 初始化数据,启用事物,并提交
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.multi();
-        redisTemplate.delete("HashA");
-        hashOperations.put("HashA", "zero", "0");
-        hashOperations.put("HashA", "a", "Aa");
-        hashOperations.put("HashA", "b", "Bb");
-        hashOperations.put("HashA", "c", "Cc");
-        redisTemplate.exec();
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Object> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                assertNotNull(operations);
+                // 开启事物, 会阻塞进程
+                operations.multi();
+                // 删除原
+                operations.delete("HashA");
+                // 操作
+                HashOperations<String, String, String> hashOperations = operations.opsForHash();
+                hashOperations.put("HashA", "zero", "0");
+                hashOperations.put("HashA", "a", "Aa");
+                hashOperations.put("HashA", "b", "Bb");
+                hashOperations.put("HashA", "c", "Cc");
+
+                return operations.exec();
+            }
+        });
     }
 
     /**

@@ -5,12 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Range;
 import org.springframework.data.redis.connection.Limit;
-import org.springframework.data.redis.core.DefaultTypedTuple;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.*;
+import org.springframework.lang.NonNull;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
@@ -41,19 +42,25 @@ class ZSetOperationsTest {
             zSetOperations = redisTemplate.opsForZSet();
         }
         // 初始化数据,启用事物,并提交
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.multi();
-        redisTemplate.delete("ZSetA");
-        zSetOperations.add("ZSetA","A",1D);
-        zSetOperations.add("ZSetA","B",2D);
-        zSetOperations.add("ZSetA","C",3D);
-        redisTemplate.delete("ZSetB");
-        zSetOperations.add("ZSetB","C",1D);
-        zSetOperations.add("ZSetB","D",2D);
-        zSetOperations.add("ZSetB","E",3D);
-        redisTemplate.delete("ZSetZero");
-        zSetOperations.add("ZSetZero","0",1D);
-        redisTemplate.exec();
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Object> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                assertNotNull(operations);
+                operations.multi();
+                operations.delete("ZSetA");
+                operations.opsForZSet().add("ZSetA","A",1D);
+                operations.opsForZSet().add("ZSetA","B",2D);
+                operations.opsForZSet().add("ZSetA","C",3D);
+                operations.delete("ZSetB");
+                operations.opsForZSet().add("ZSetB","C",1D);
+                operations.opsForZSet().add("ZSetB","D",2D);
+                operations.opsForZSet().add("ZSetB","E",3D);
+                operations.delete("ZSetZero");
+                operations.opsForZSet().add("ZSetZero","0",1D);
+                return operations.exec();
+            }
+        });
     }
 
     /**

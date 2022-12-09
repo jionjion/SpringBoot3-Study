@@ -5,8 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.RedisOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SessionCallback;
 import org.springframework.data.redis.core.SetOperations;
+import org.springframework.lang.NonNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,14 +43,20 @@ class SetOperationsTest {
             setOperations = redisTemplate.opsForSet();
         }
         // 初始化数据,启用事物,并提交
-        redisTemplate.setEnableTransactionSupport(true);
-        redisTemplate.multi();
-        redisTemplate.delete("SetA");
-        redisTemplate.delete("SetB");
-        redisTemplate.delete("SetC");
-        setOperations.add("SetA", "A", "B", "C");
-        setOperations.add("SetB", "C", "D", "E");
-        redisTemplate.exec();
+        redisTemplate.execute(new SessionCallback<List<Object>>() {
+            @Override
+            @SuppressWarnings("unchecked")
+            public List<Object> execute(@NonNull RedisOperations operations) throws DataAccessException {
+                assertNotNull(operations);
+                operations.multi();
+                operations.delete("SetA");
+                operations.delete("SetB");
+                operations.delete("SetC");
+                operations.opsForSet().add("SetA", "A", "B", "C");
+                operations.opsForSet().add("SetB", "C", "D", "E");
+                return operations.exec();
+            }
+        });
     }
 
     /**

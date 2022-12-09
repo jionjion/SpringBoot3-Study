@@ -19,15 +19,15 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * 测试 BoundKeyOperations 接口
- * 实现类
- * BoundGeoOperations          空间地理
- * BoundHashOperations         Hash 绑定操作
- * BoundKeyOperations          Key 绑定操作
- * BoundListOperations         List 绑定操作
- * BoundSetOperations          Set 绑定操作
- * BoundValueOperations        Value 绑定操作
- * BoundZSetOperations         Zset 绑定操作
+ * 测试 BoundKeyOperations 接口 </br>
+ * 实现类  </br>
+ * BoundGeoOperations          空间地理 </br>
+ * BoundHashOperations         Hash 绑定操作 </br>
+ * BoundKeyOperations          Key 绑定操作 </br>
+ * BoundListOperations         List 绑定操作 </br>
+ * BoundSetOperations          Set 绑定操作 </br>
+ * BoundValueOperations        Value 绑定操作 </br>
+ * BoundZSetOperations         Zset 绑定操作 </br>
  *
  * @author Jion
  */
