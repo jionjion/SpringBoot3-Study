@@ -15,16 +15,16 @@ configurations {
 }
 
 repositories {
-    //maven { url 'E:\\Gradle\\repository' }
+    maven { url 'E:\\Gradle\\repository' }
     maven { url 'https://maven.aliyun.com/repository/public/' }
     mavenCentral()
 }
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web:3.0.0'
-    //implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
-    //implementation 'top.jionjion:util-starter:3.0'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.0'
+    implementation 'top.jionjion:util-starter:3.0'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:3.0'
     runtimeOnly 'com.mysql:mysql-connector-j'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

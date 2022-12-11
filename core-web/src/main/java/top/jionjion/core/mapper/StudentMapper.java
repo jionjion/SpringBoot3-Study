@@ -1,18 +1,22 @@
 package top.jionjion.core.mapper;
 
-//import org.apache.ibatis.annotations.Mapper;
-//import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import top.jionjion.core.bean.Student;
 
 /**
+ * 学生类查询
+ *
  * @author Jion
  */
-//@Mapper
+@Mapper
 public interface StudentMapper {
 
     /**
-     *  通过ID查询
+     * 通过ID查询
+     *
      * @param id 主键
      * @return 结果
      */
-//    Student findStudentById(@Param("id") Integer id);
+    Student findStudentById(@Param("id") Integer id);
 }

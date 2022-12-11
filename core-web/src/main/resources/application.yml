@@ -13,6 +13,7 @@ spring:
 
 # Mybatis的配置信息
 mybatis:
+  mapper-default-scope: top.jionjion.core.mapper.*
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: top.jionjion.web.bean
   inject-sql-session-on-mapper-scan: true
