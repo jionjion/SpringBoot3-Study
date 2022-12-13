@@ -5,9 +5,7 @@ package scripts
  *
  * @author Jion
  */
-class HelloWorld {
-
-    def HelloWorld() {
-        println "hello world"
-    }
+def HelloWorld() {
+    println "hello world"
 }
+
