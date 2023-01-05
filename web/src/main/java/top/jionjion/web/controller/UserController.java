@@ -121,7 +121,7 @@ public class UserController {
                                @RequestPart(value = "file", required = false) MultipartFile file,
                                @CookieValue(value = "token", required = false) Cookie cookie) {
         logger.info(() -> "uploadPhoto user: " + user);
-        logger.info(() -> "uploadPhoto file:" + file.getName() + " size: " + file);
+        logger.info(() -> "uploadPhoto file:" + file);
         logger.info(() -> "uploadPhoto cookie:" + cookie);
         return Boolean.TRUE;
     }
