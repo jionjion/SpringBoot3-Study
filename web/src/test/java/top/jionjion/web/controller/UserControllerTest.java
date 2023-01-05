@@ -1,6 +1,7 @@
 package top.jionjion.web.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.Cookie;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +107,10 @@ class UserControllerTest {
         MockMultipartFile multipartFile = new MockMultipartFile("file", "jion.jpg",
                 MediaType.IMAGE_JPEG_VALUE, new FileInputStream("W:\\SpringBoot3-Study\\web\\src\\test\\resources\\static\\jion.jpg"));
 
-        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/user/users/photo").file(multipartFile).file(multipartJson))
+        // cookie
+        Cookie cookie = new Cookie("token", "1234567890");
+
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/user/users/photo").file(multipartFile).file(multipartJson).cookie(cookie))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 }

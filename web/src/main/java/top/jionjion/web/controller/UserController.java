@@ -1,5 +1,6 @@
 package top.jionjion.web.controller;
 
+import jakarta.servlet.http.Cookie;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -80,9 +81,7 @@ public class UserController {
      * URL: <a href="http://localhost:8080/user/users/3">...</a>
      */
     @PutMapping(value = "/users/{id}")
-    public User userUpdate(@PathVariable("id") Integer id,
-                           @RequestParam("username") String username,
-                           @RequestParam("password") String password) {
+    public User userUpdate(@PathVariable("id") Integer id, @RequestParam("username") String username, @RequestParam("password") String password) {
 
         User user = new User();
         //保存主键
@@ -118,10 +117,13 @@ public class UserController {
      * 附件上传, 使用 multipart/form-data 处理
      */
     @PostMapping(value = "/users/photo")
-    public void uploadPhoto(@RequestPart(value = "user", required = false) User user,
-                            @RequestPart(value = "file", required = false) MultipartFile file) {
-        logger.info(() -> "uploadPhoto: " + user);
-        logger.info(() -> "uploadPhoto: " + file.getName() + " size: " + file);
+    public Boolean uploadPhoto(@RequestPart(value = "user", required = false) User user,
+                               @RequestPart(value = "file", required = false) MultipartFile file,
+                               @CookieValue(value = "token", required = false) Cookie cookie) {
+        logger.info(() -> "uploadPhoto user: " + user);
+        logger.info(() -> "uploadPhoto file:" + file.getName() + " size: " + file);
+        logger.info(() -> "uploadPhoto cookie:" + cookie);
+        return Boolean.TRUE;
     }
 
     /**
