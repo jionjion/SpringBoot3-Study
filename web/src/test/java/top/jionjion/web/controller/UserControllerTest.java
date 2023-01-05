@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
@@ -15,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import top.jionjion.web.bean.User;
 
+import java.io.FileInputStream;
 import java.util.Collections;
 import java.util.Date;
 
@@ -85,6 +87,26 @@ class UserControllerTest {
     @Test
     void userGetByUsername() throws Exception {
         this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users/username/{username}", "jion").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    void uploadPhoto() throws Exception {
+        User user = new User();
+        user.setId(1);
+        user.setUsername("username");
+        user.setPassword("password");
+        user.setAddress("ShangHai");
+        user.setBirthday(new Date());
+
+        // json 文本
+        MockMultipartFile multipartJson = new MockMultipartFile("user", "", "application/json", objectMapper.writeValueAsString(user).getBytes());
+
+        // 文件
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "jion.jpg",
+                MediaType.IMAGE_JPEG_VALUE, new FileInputStream("W:\\SpringBoot3-Study\\web\\src\\test\\resources\\static\\jion.jpg"));
+
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/user/users/photo").file(multipartFile).file(multipartJson))
                 .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 }

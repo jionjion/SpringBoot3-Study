@@ -3,6 +3,7 @@ package top.jionjion.web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.jionjion.web.bean.User;
 import top.jionjion.web.dto.ResultMessage;
 import top.jionjion.web.exception.UserException;
@@ -111,6 +112,16 @@ public class UserController {
         List<User> users = userService.findByUsername(username);
         logger.info(() -> "userGetByUsername: " + users.toString());
         return users;
+    }
+
+    /**
+     * 附件上传, 使用 multipart/form-data 处理
+     */
+    @PostMapping(value = "/users/photo")
+    public void uploadPhoto(@RequestPart(value = "user", required = false) User user,
+                            @RequestPart(value = "file", required = false) MultipartFile file) {
+        logger.info(() -> "uploadPhoto: " + user);
+        logger.info(() -> "uploadPhoto: " + file.getName() + " size: " + file);
     }
 
     /**
