@@ -125,7 +125,7 @@ class UserClientTest {
         user.setAddress("ShangHai");
         user.setBirthday(new Date());
         File file = new File("W:\\SpringBoot3-Study\\web\\src\\test\\resources\\static\\jion.jpg");
-        ResponseEntity<Object> responseEntity = userClient.uploadPhoto(user, null, null);
+        ResponseEntity<Object> responseEntity = userClient.uploadPhoto(user, file, null);
         logger.info(() -> "statusCode: " + responseEntity.getStatusCode());
         Object body = responseEntity.getBody();
         logger.info(() -> "responseBody: " + body);
