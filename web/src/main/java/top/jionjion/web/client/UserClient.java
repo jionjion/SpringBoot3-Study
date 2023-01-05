@@ -21,18 +21,23 @@ import java.util.List;
 public interface UserClient {
 
     /**
-     * 查询全部
+     * 查询全部, 流查询
      *
      * @return 全部
      */
     @GetExchange("/users")
     Flux<User> userListWebflux();
 
+    /**
+     * 查询全部
+     *
+     * @return 全部
+     */
     @GetExchange("/users")
     List<User> userList();
 
     /**
-     * 新增一个
+     * 新增一个, 流新增
      *
      * @param user 用户
      * @return 新增后
@@ -40,6 +45,12 @@ public interface UserClient {
     @PostExchange("/user")
     Mono<ResponseEntity<ResultMessage<User>>> userSaveWebflux(@RequestBody User user);
 
+    /**
+     * 新增一个
+     *
+     * @param user 用户
+     * @return 新增后
+     */
     @PostExchange("/user")
     ResponseEntity<ResultMessage<User>> userSave(@RequestBody User user);
 

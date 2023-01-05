@@ -1,5 +1,6 @@
 package top.jionjion.web.client;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,17 +34,13 @@ class UserClientTest {
     void userListWebflux() {
         Flux<User> list = userClient.userListWebflux();
         Stream<User> userStream = list.toStream();
-        userStream.forEach(user -> {
-            logger.info(() -> "userList: " + user);
-        });
+        userStream.forEach(user -> logger.info(() -> "userList: " + user));
     }
 
     @Test
     void userList() {
         List<User> list = userClient.userList();
-        list.forEach(user -> {
-            logger.info(() -> "userList: " + user);
-        });
+        list.forEach(user -> logger.info(() -> "userList: " + user));
     }
 
     @Test
@@ -118,6 +115,8 @@ class UserClientTest {
 
     @Test
     void uploadPhoto() {
+        Assertions.fail("暂时不支持....");
+
         User user = new User();
         user.setId(1);
         user.setUsername("username");
