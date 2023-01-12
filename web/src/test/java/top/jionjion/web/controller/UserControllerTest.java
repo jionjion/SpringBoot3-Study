@@ -44,28 +44,24 @@ class UserControllerTest {
 
     @Test
     void userList() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users").accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk())
-                .andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users").accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void userSave() throws Exception {
         User user = new User();
         user.setId(1);
-        user.setUsername("username");
-        user.setPassword("password");
+        user.setUsername("jionjion");
+        user.setPassword("123456");
         user.setAddress("ShangHai");
         user.setBirthday(new Date());
         // json 请求体
-        this.mockMvc.perform(MockMvcRequestBuilders.post("/user/user").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.post("/user/user").contentType(MediaType.APPLICATION_JSON).content(objectMapper.writeValueAsString(user)).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void userGet() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users/1").accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users/1").accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -75,20 +71,17 @@ class UserControllerTest {
         params.put("password", Collections.singletonList("123456"));
 
         // json 请求体
-        this.mockMvc.perform(MockMvcRequestBuilders.put("/user/users/{id}", 1).contentType(MediaType.APPLICATION_JSON).params(params).accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.put("/user/users/{id}", 1).contentType(MediaType.MULTIPART_FORM_DATA_VALUE).params(params).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void userDelete() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/users/{id}", 1).accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.delete("/user/users/{id}", 1).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
     void userGetByUsername() throws Exception {
-        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users/username/{username}", "jion").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.get("/user/users/username/{username}", "jion").contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 
     @Test
@@ -104,13 +97,11 @@ class UserControllerTest {
         MockMultipartFile multipartJson = new MockMultipartFile("user", "", "application/json", objectMapper.writeValueAsString(user).getBytes());
 
         // 文件
-        MockMultipartFile multipartFile = new MockMultipartFile("file", "jion.jpg",
-                MediaType.IMAGE_JPEG_VALUE, new FileInputStream("W:\\SpringBoot3-Study\\web\\src\\test\\resources\\static\\jion.jpg"));
+        MockMultipartFile multipartFile = new MockMultipartFile("file", "jion.jpg", MediaType.IMAGE_JPEG_VALUE, new FileInputStream("W:\\SpringBoot3-Study\\web\\src\\test\\resources\\static\\jion.jpg"));
 
         // cookie
         Cookie cookie = new Cookie("token", "1234567890");
 
-        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/user/users/photo").file(multipartFile).file(multipartJson).cookie(cookie))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
+        this.mockMvc.perform(MockMvcRequestBuilders.multipart("/user/users/photo").file(multipartFile).file(multipartJson).cookie(cookie)).andExpect(MockMvcResultMatchers.status().isOk()).andDo(MockMvcResultHandlers.print());
     }
 }
