@@ -7,6 +7,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+
 /**
  * Bean的生命周期
  *
@@ -19,12 +21,14 @@ public class People implements InitializingBean, DisposableBean {
 
     private String name;
 
+    private LocalDate birthday = LocalDate.now();
+
     @Value("${spring.datasource.url}")
     String datasourceUrl;
 
     /**
      * 优先执行,初始化方法
-     * 已经 new 创建对象后执行, 尚未对 new 出的对象进行过属性赋值..
+     * 已经 new 创建对象后执行, 且已经对 new 出的对象进行过属性赋值..
      *
      * @throws Exception 如果发生了异常
      */
@@ -35,7 +39,7 @@ public class People implements InitializingBean, DisposableBean {
 
     /**
      * 其次执行, 初始化方法
-     * 此时, Bean 通过getBean() 方法已经创建过后, 尚未对 new 出的对象进行过属性赋值..
+     * 此时, Bean 通过getBean() 方法已经创建过后, 且已经对 new 出的对象进行过属性赋值..
      *
      * @throws Exception 如果发生了异常
      */
