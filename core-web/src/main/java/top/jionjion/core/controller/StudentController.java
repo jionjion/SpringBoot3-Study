@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import top.jionjion.core.bean.Student;
-import top.jionjion.core.utils.service.StudentService;
+import top.jionjion.core.service.StudentService;
 
 /**
  * 学生类前端控制器

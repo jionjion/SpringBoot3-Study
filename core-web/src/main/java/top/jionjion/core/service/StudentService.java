@@ -1,4 +1,4 @@
-package top.jionjion.core.utils.service;
+package top.jionjion.core.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
