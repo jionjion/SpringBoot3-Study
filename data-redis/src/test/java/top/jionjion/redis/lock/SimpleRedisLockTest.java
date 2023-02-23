@@ -44,6 +44,7 @@ class SimpleRedisLockTest {
 
     @Test
     void testBusinessMethod() throws InterruptedException {
+        // 线程征用问题
         Thread threadA = new Thread(this::businessMethod, "Thread-A");
         Thread threadB = new Thread(this::businessMethod, "Thread-B");
 
@@ -56,6 +57,7 @@ class SimpleRedisLockTest {
 
     @Test
     void tryLock() throws InterruptedException {
+        // 尝试获取锁, 释放锁
         ILock lock = new SimpleRedisLock("Lock-A", stringRedisTemplate);
         log.info("获得锁: {}", lock.tryLock(1));
         log.info("获得锁: {}", lock.tryLock(1));
