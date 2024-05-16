@@ -1,0 +1,35 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+}
+
+group = 'top.jionjion'
+version = '3.0'
+sourceCompatibility = '17'
+
+
+repositories {
+    maven { url 'https://maven.aliyun.com/repository/public/' }
+    mavenCentral()
+}
+
+dependencies {
+	// spring-boot
+    implementation 'org.springframework.boot:spring-boot-starter'
+    // 依赖 mybatis-flex
+    implementation 'com.mybatis-flex:mybatis-flex-spring-boot-starter:1.8.9'
+    // 注解处理器
+    annotationProcessor 'com.mybatis-flex:mybatis-flex-processor:1.8.9'
+	// postgresql
+    implementation 'org.postgresql:postgresql:42.7.3'
+    // hikariCP
+    implementation 'com.zaxxer:HikariCP:5.0.1'
+	// 单元测试
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
