@@ -4,13 +4,13 @@
 
     <select id="selectByUserName" resultType="top.jionjion.mybatis.flex.entity.Account">
         SELECT id, user_name, age, birthday
-          FROM tb_account
+          FROM account
          WHERE user_name = #{userName,jdbcType=VARCHAR} LIMIT 1
     </select>
 
 
     <select id="selectByUserName_COUNT" resultType="long">
-        select count(*) from tb_account ${qwSql}
+        select count(*) from account ${qwSql}
         <!-- 其他参数 -->
         and user_name = #{otherName}
     </select>

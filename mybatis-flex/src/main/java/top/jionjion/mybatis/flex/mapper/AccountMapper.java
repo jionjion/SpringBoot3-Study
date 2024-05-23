@@ -18,7 +18,7 @@ public interface AccountMapper extends BaseMapper<Account> {
      * @param id 主键
      * @return 查询结果
      */
-    @Select("select * from tb_account where id = #{id,jdbcType=BIGINT}")
+    @Select("select * from account where id = #{id,jdbcType=BIGINT}")
     Account selectById(@Param("id") Long id);
 
     /**

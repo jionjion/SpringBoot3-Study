@@ -11,7 +11,7 @@ import java.time.LocalDate;
  *
  * @author Jion
  */
-@Table("tb_account")
+@Table("account")
 public class Account {
 
     /**
@@ -34,6 +34,19 @@ public class Account {
      * 生日
      */
     private LocalDate birthday;
+
+    public Account() {
+
+    }
+
+    public Account(String userName) {
+        this.userName = userName;
+    }
+
+    public Account(Long id, String userName) {
+        this.id = id;
+        this.userName = userName;
+    }
 
     public Long getId() {
         return id;
