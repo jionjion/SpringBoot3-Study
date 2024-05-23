@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.jionjion.mybatis.flex.mapper.AccountMapper">
+
+    <select id="selectByUserName" resultType="top.jionjion.mybatis.flex.entity.Account">
+        SELECT id, user_name, age, birthday
+          FROM tb_account
+         WHERE user_name = #{userName,jdbcType=VARCHAR} LIMIT 1
+    </select>
+
+
+    <select id="selectByUserName_COUNT" resultType="long">
+        select count(*) from tb_account ${qwSql}
+        <!-- 其他参数 -->
+        and user_name = #{userName}
+    </select>
+</mapper>
