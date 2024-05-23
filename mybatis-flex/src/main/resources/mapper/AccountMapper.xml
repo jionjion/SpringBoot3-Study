@@ -12,6 +12,6 @@
     <select id="selectByUserName_COUNT" resultType="long">
         select count(*) from tb_account ${qwSql}
         <!-- 其他参数 -->
-        and user_name = #{userName}
+        and user_name = #{otherName}
     </select>
 </mapper>

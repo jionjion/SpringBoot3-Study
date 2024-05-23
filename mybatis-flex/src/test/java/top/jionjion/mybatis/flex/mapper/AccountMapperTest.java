@@ -13,7 +13,7 @@ import java.util.Map;
 import static top.jionjion.mybatis.flex.entity.table.AccountTableDef.ACCOUNT;
 
 /**
- * 测试账号
+ * 测试类, 账号表的入门操作
  *
  * @author Jion
  */
@@ -53,7 +53,7 @@ class AccountMapperTest {
     }
 
     /**
-     * 测试xml的sql,并使用分页效果
+     * 测试xml的sql,并使用自定义分页效果, 并可以在分页参数中加添默认条件
      */
     @Test
     void selectByUserNameWithPage() {
@@ -64,7 +64,7 @@ class AccountMapperTest {
 
         // 可选其他参数
         Map<String, Object> otherParams = new HashMap<>();
-        otherParams.put("userName", "张三");
+        otherParams.put("otherName", "其他参数");
 
         Page<Account> accountPage = accountMapper.xmlPaginate("top.jionjion.mybatis.flex.mapper.AccountMapper.selectByUserName",
                 Page.of(1, 10), queryWrapper, otherParams);
