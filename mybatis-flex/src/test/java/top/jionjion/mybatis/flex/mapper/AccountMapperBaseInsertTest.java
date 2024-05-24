@@ -1,5 +1,6 @@
 package top.jionjion.mybatis.flex.mapper;
 
+import com.mybatisflex.core.update.UpdateWrapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -155,5 +156,38 @@ class AccountMapperBaseInsertTest {
         accountMapper.insertOrUpdate(account, false);
         // insertOrUpdateSelective 的默认实现
         accountMapper.insertOrUpdate(account, true);
+    }
+
+
+    /**
+     * 使用数据库原生方式
+     */
+    @Test
+    void insertUpdateWrapper() {
+        Account account = new Account();
+        account.setUserName("张三");
+
+        Account newAccount = UpdateWrapper.of(account)
+                .setRaw("birthday", "now()")
+//                .setRaw(ACCOUNT.BIRTHDAY, "now()")
+//                .setRaw(Account::getBirthday, "now()")
+                .toEntity();
+
+        accountMapper.insert(newAccount);
+    }
+
+    /**
+     *  测试使用子查询等数据库对象操作完成
+     */
+    @Test
+    void testInsertWithRaw() {
+        Account account = new Account();
+        account.setUserName("张三");
+
+        Account newAccount = UpdateWrapper.of(account)
+                .setRaw(Account::getBirthday, "(select max(birthday) from account)")
+                .toEntity();
+
+        accountMapper.insert(newAccount);
     }
 }
