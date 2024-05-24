@@ -89,7 +89,6 @@ class AccountMapperBaseDeleteTest {
      */
     @Test
     void deleteByQuery() {
-        Account account = new Account(100L, "张三");
         QueryWrapper queryWrapper = QueryWrapper.create().where(AccountTableDef.ACCOUNT.ID.ge(10));
         accountMapper.deleteByQuery(queryWrapper);
     }
