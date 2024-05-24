@@ -118,7 +118,7 @@ class AccountMapperBaseInsertTest {
      * 批量插入实体类数据, 按 size 切分, 一个批次插入N条
      */
     @Test
-    void insertBatchWithSize() {
+    void insertBatchWithBatchSize() {
         List<Account> list = new ArrayList<>();
         list.add(new Account("张三"));
         list.add(new Account("李四"));
