@@ -25,7 +25,8 @@ class AccountMapperBaseDeleteTest {
     private AccountMapper accountMapper;
 
     /**
-     * 根据主键删除数据。如果是多个主键的情况下，需要传入数组，例如：new Integer[]{100,101}。
+     * 根据主键删除数据.
+     * 如果是多个主键的情况下, 需要传入数组, 例如：new Integer[]{100,101}.
      */
     @Test
     void deleteById() {
@@ -34,7 +35,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据实体主键来删除数据。
+     * 根据实体主键来删除数据.
      */
     @Test
     void delete() {
@@ -43,7 +44,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据多个主键批量删除数据。
+     * 根据多个主键批量删除数据.
      */
     @Test
     void deleteBatchByIds() {
@@ -54,7 +55,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据多个主键批量删除数据。
+     * 根据多个主键批量删除数据.
      */
     @Test
     void deleteBatchByIdsWithBatchSize() {
@@ -67,7 +68,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据 Map构建的条件来删除数据。
+     * 根据 Map构建的条件来删除数据.
      */
     @Test
     void deleteByMap() {
@@ -77,7 +78,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据查询条件来删除数据。
+     * 根据查询条件来删除数据.
      */
     @Test
     void deleteByCondition() {
@@ -85,7 +86,7 @@ class AccountMapperBaseDeleteTest {
     }
 
     /**
-     * 根据查询条件来删除数据。
+     * 根据查询条件来删除数据.
      */
     @Test
     void deleteByQuery() {
